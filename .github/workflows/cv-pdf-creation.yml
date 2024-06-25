@@ -1,0 +1,72 @@
+# This is a basic workflow to help you get started with Actions
+
+name: cv-pdf-creation
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build-pdf:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: texlive texlive-base texlive-latex-extra texlive-fonts-extra
+          version: 1.0
+
+      - name: Update APT-List
+        run: sudo apt-get update
+
+      # Runs a single command using the runners shell
+      - name: Install tex-live
+        run: sudo apt-get install --fix-missing -y texlive texlive-base texlive-latex-extra texlive-fonts-extra
+
+      # Runs a set of commands using the runners shell
+      - name: Run build script
+        run: |
+          mkdir out
+          chmod -R u+w ./out
+          bash ./scripts/pdftex.bash
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdf-files
+          path: out/*.pdf
+  push-pdf:
+    runs-on: ubuntu-latest
+    needs: build-pdf
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: pdf-files
+          path: out
+
+      - name: Upload PDF to Nextcloud
+        env:
+          NEXTCLOUD_USERNAME: ${{ secrets.NEXTCLOUD_USERNAME }}
+          NEXTCLOUD_PASSWORD: ${{ secrets.NEXTCLOUD_PASSWORD }}
+          NEXTCLOUD_URL: ${{ secrets.NEXTCLOUD_URL }}
+        run: |
+          PDF_FILE_PATH=$(find out -name '*.pdf')
+          if [ -z "$PDF_FILE_PATH" ]; then
+            echo "No PDF file found to upload"
+            exit 1
+          fi
+          curl -u "$NEXTCLOUD_USERNAME:$NEXTCLOUD_PASSWORD" -T "$PDF_FILE_PATH" "$NEXTCLOUD_URL/remote.php/webdav/Documents/Lebenslauf/$(basename $PDF_FILE_PATH)"
