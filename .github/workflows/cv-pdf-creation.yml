@@ -33,7 +33,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Install tex-live
-        run: sudo apt-get install --fix-missing -y texlive texlive-base texlive-latex-extra texlive-fonts-extra
+        run: sudo apt-get install --fix-missing -y texlive texlive-base texlive-latex-extra texlive-fonts-extra pdftk
 
       # Runs a set of commands using the runners shell
       - name: Run build script
@@ -41,6 +41,9 @@ jobs:
           mkdir out
           chmod -R u+w ./out
           bash ./scripts/pdftex.bash
+          mv out/main.pdf out/input.pdf
+          pdftk out/input.pdf cat 1-4 output out/main.pdf
+          rm out/input.pdf
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
