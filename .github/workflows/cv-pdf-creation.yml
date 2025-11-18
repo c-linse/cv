@@ -22,15 +22,15 @@ jobs:
       # ---- Additional PDF post-processing (your custom steps) ----
       - name: Trim PDF to first 4 pages
         run: |
-          mv out/main.pdf out/input.pdf
-          pdftk out/input.pdf cat 1-4 output out/main.pdf
-          rm out/input.pdf
+          mv main.pdf input.pdf
+          pdftk input.pdf cat 1-4 output main.pdf
+          rm input.pdf
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: pdf-files
-          path: out/*.pdf
+          path: main.pdf
 
   push-pdf:
     runs-on: ubuntu-latest
