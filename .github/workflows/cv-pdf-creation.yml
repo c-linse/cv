@@ -43,7 +43,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: pdf-files
-          path: out
+          path: .
 
       - name: Upload PDF to Nextcloud
         env:
@@ -51,7 +51,7 @@ jobs:
           NEXTCLOUD_PASSWORD: ${{ secrets.NEXTCLOUD_PASSWORD }}
           NEXTCLOUD_URL: ${{ secrets.NEXTCLOUD_URL }}
         run: |
-          PDF_FILE_PATH=$(find out -name '*.pdf')
+          PDF_FILE_PATH=$(find . -name 'main.pdf')
           if [ -z "$PDF_FILE_PATH" ]; then
             echo "No PDF file found to upload"
             exit 1
