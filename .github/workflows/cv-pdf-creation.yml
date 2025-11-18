@@ -25,7 +25,7 @@ jobs:
       - name: Trim PDF to first 4 pages
         run: |
           mv main.pdf input.pdf
-          pdftk input.pdf cat 1-4 output main.pdf
+          pdftk input.pdf cat 1-5 output main.pdf
           rm input.pdf
 
       - name: Upload artifacts
