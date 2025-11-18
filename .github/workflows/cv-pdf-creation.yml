@@ -56,7 +56,8 @@ jobs:
             echo "No PDF file found to upload"
             exit 1
           fi
-
+          echo "uploading $PDF_FILE_PATH"
           curl -u "$NEXTCLOUD_USERNAME:$NEXTCLOUD_PASSWORD" \
                -T "$PDF_FILE_PATH" \
                "$NEXTCLOUD_URL/remote.php/webdav/Documents/Lebenslauf/$(basename "$PDF_FILE_PATH")"
+          echo "uploading $PDF_FILE_PATH finished"
