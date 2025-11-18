@@ -13,21 +13,16 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      # ---- Install only the required LaTeX packages (NOT texlive-full) ----
-      - uses: awalsh128/cache-apt-pkgs-action@latest
+      # ---- Build PDF using xu-cheng/latex-action ----
+      - name: Compile LaTeX
+        uses: xu-cheng/latex-action@v3
         with:
-          packages: texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra pdftk
-          version: 1.0
+          root_file: main.tex   # <-- change if your entry file is named differently
+          output_directory: out
 
-      - name: Update APT-List
-        run: sudo apt-get update
-
-      # ---- Build PDF ----
-      - name: Run build script
+      # ---- Additional PDF post-processing (your custom steps) ----
+      - name: Trim PDF to first 4 pages
         run: |
-          mkdir out
-          chmod -R u+w ./out
-          bash ./scripts/pdftex.bash
           mv out/main.pdf out/input.pdf
           pdftk out/input.pdf cat 1-4 output out/main.pdf
           rm out/input.pdf
