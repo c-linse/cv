@@ -17,7 +17,7 @@ jobs:
       - name: Compile LaTeX
         uses: xu-cheng/latex-action@v4
         with:
-          root_file: main.tex   # <-- change if your entry file is named differently
+          root_file: src/main.tex   # <-- change if your entry file is named differently
 
       # ---- Additional PDF post-processing (your custom steps) ----
       - name: Trim PDF to first 4 pages
