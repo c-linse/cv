@@ -1,0 +1,62 @@
+name: Build CV PDF
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin
+            ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-typst-cli-0.15.1
+
+      - name: Install Typst CLI
+        run: cargo install --locked typst-cli --version 0.15.1
+
+      - name: Compile CV
+        run: typst compile main.typ main.pdf
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdf-files
+          path: main.pdf
+
+  push-pdf:
+    runs-on: ubuntu-latest
+    needs: build-pdf
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: pdf-files
+          path: .
+
+      - name: Upload PDF to Nextcloud
+        env:
+          NEXTCLOUD_USERNAME: ${{ secrets.NEXTCLOUD_USERNAME }}
+          NEXTCLOUD_PASSWORD: ${{ secrets.NEXTCLOUD_PASSWORD }}
+          NEXTCLOUD_URL: ${{ secrets.NEXTCLOUD_URL }}
+        run: |
+          PDF_FILE_PATH=$(find . -name 'main.pdf')
+          if [ -z "$PDF_FILE_PATH" ]; then
+            echo "No PDF file found to upload"
+            exit 1
+          fi
+          echo "uploading $PDF_FILE_PATH"
+          curl -u "$NEXTCLOUD_USERNAME:$NEXTCLOUD_PASSWORD" \
+               -T "$PDF_FILE_PATH" \
+               "$NEXTCLOUD_URL/remote.php/webdav/Documents/Lebenslauf/$(basename "$PDF_FILE_PATH")"
