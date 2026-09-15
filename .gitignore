@@ -4,3 +4,6 @@
 
 # Typst cache
 .typst-cache/
+
+# IDE
+.idea/
