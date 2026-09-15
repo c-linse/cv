@@ -1,0 +1,6 @@
+# Typst build output
+/*.pdf
+!/reference/*.pdf
+
+# Typst cache
+.typst-cache/
