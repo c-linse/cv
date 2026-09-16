@@ -68,8 +68,18 @@
 
 #let tech-list(..groups) = list(..groups.pos().map(g => [*#g.at(0):* #g.at(1)]))
 
-// Two equal-width columns, used for the page-2+ body.
-#let two-col(left, right) = grid(columns: (1fr, 1fr), column-gutter: 26pt, left, right)
+// Body geometry — kept in sync with the page margins set in `cv-style`.
+#let page-margin-x = 1.7cm
+#let body-gutter = 26pt
+#let body-width = 21cm - 2 * page-margin-x
+#let left-col-width = (body-width - body-gutter) / 3
 
-// Thin vertical rule between the two body columns on pages 2+.
-#let divider-background = place(top + center, line(angle: 90deg, length: 100% - 3.2cm, stroke: 0.4pt + rgb("#d5d5d5")))
+// One-third / two-thirds columns, used for the page-2+ body.
+#let two-col(left, right) = grid(columns: (left-col-width, 1fr), column-gutter: body-gutter, left, right)
+
+// Thin vertical rule centred in the gutter between the two body columns.
+#let divider-background = place(
+  top + left,
+  dx: page-margin-x + left-col-width + body-gutter / 2,
+  line(angle: 90deg, length: 100% - 3.2cm, stroke: 0.4pt + rgb("#d5d5d5")),
+)

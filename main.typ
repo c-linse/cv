@@ -16,8 +16,8 @@
 // ---- page 1 -----------------------------------------------------------
 
 #grid(
-  columns: (32%, 1fr),
-  column-gutter: 20pt,
+  columns: (left-col-width, 1fr),
+  column-gutter: body-gutter,
   [
     #image("assets/photo.jpg", width: 100%)
     #v(14pt)
@@ -49,6 +49,8 @@
 )
 
 // ---- pages 2+: two-column continuation --------------------------------
+// Both columns flow on as one grid, so each column breaks onto the next page
+// independently instead of being chopped into fixed per-page blocks.
 
 #pagebreak()
 #set page(background: divider-background)
@@ -59,49 +61,24 @@
     #education.udemy
     #education.bsc
     #education.technician
-  ],
-  [
-    #experience.avaloq-esb
-    #experience.swiss-governance
-  ],
-)
-
-#pagebreak()
-
-#two-col(
-  [
     #education.it-specialist
+
     #certifications.heading
     #certifications.cks
     #certifications.cka
-  ],
-  [
-    #experience.automobile
-    #experience.systems-engineer
-  ],
-)
-
-#pagebreak()
-
-#two-col(
-  [
     #certifications.ckad
     #certifications.kcna
     #certifications.kcsa
-  ],
-  [
-    #experience.systems-engineer-continued
-  ],
-)
-
-#pagebreak()
-
-#two-col(
-  [
     #certifications.pca
     #certifications.ica
     #certifications.capa
     #certifications.cgoa
   ],
-  [],
+  [
+    #experience.avaloq-esb
+    #experience.swiss-governance
+    #experience.automobile
+    #experience.systems-engineer
+    #experience.systems-engineer-continued
+  ],
 )
