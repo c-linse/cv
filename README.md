@@ -40,5 +40,4 @@ The upload needs three repository secrets: `NEXTCLOUD_URL` (base URL of the inst
 
 ## PDF
 
-<!-- TODO: replace with the public share link -->
-[PDF-Link](#)
+[PDF-Link](https://cloud.clinse.de/s/G4kobsW24eYaEqG)
