@@ -22,7 +22,10 @@ jobs:
           key: ${{ runner.os }}-cargo-typst-cli-0.15.1
 
       - name: Install Typst CLI
-        run: cargo install --locked typst-cli --version 0.15.1
+        run: |
+          if [ "$(typst --version 2>/dev/null | awk '{print $2}')" != "0.15.1" ]; then
+            cargo install --locked typst-cli --version 0.15.1
+          fi
 
       - name: Compile CV
         run: typst compile main.typ main.pdf
