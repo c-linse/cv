@@ -13,5 +13,6 @@
   My enthusiasm for cloud native computing has lasted for more than 6 years and
   therefore maps my specialization. Especially the current software projects within the
   cloud native landscape provide professional tools that help me to modernize the IT
-  industry.
+  industry. As a Golden Kubestronaut I hold 16 CNCF and Linux Foundation certifications,
+  covering Kubernetes, security, observability, GitOps and platform engineering.
 ]

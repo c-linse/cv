@@ -37,7 +37,7 @@
       #v(4pt)
       #box(width: 34pt, height: 2pt, fill: accent)
       #v(6pt)
-      #text(fill: rgb("#d8d8d8"), size: 11pt)[Cloud and Software Engineer]
+      #text(fill: rgb("#d8d8d8"), size: 11pt)[Cloud and Software Engineer #h(6pt)·#h(6pt) Golden Kubestronaut]
     ]
 
     #profile.heading
@@ -64,15 +64,9 @@
     #education.it-specialist
 
     #certifications.heading
-    #certifications.cks
-    #certifications.cka
-    #certifications.ckad
-    #certifications.kcna
-    #certifications.kcsa
-    #certifications.pca
-    #certifications.ica
-    #certifications.capa
-    #certifications.cgoa
+    #certifications.golden-kubestronaut
+    #certifications.kubestronaut
+    #certifications.golden
   ],
   [
     #experience.avaloq-esb
